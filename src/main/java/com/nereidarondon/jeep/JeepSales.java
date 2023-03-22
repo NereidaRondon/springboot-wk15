@@ -1,9 +1,7 @@
-/*Create jeepSales → fetchJeppTest → fetchJeepTestSupport →BaseTest
+/*Create jeepSales → fetchJeepTest → fetchJeepTestSupport →BaseTest
  * 
 */
-
 package com.nereidarondon.jeep;
-
 
 //imports for SpringBoot
 import org.springframework.boot.SpringApplication;

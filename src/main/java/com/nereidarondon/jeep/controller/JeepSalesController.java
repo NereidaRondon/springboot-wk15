@@ -4,12 +4,17 @@
 package com.nereidarondon.jeep.controller;
 
 import java.util.List;
+import javax.validation.constraints.Pattern;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import com.nereidarondon.jeep.Constants;
 import com.nereidarondon.jeep.entity.Jeep;
+import com.nereidarondon.jeep.entity.JeepModel;
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -19,15 +24,17 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.servers.Server;
 
+// turns on Bean validation 
+@Validated
 //tells Spring to map any URIs with /jeeps after port # to this class 
 @RequestMapping("/jeeps")
-
 //@formatter:off
 @OpenAPIDefinition(
     info = @Info(title = "Jeep Sales Service"),
     servers = {@Server(url = "http://localhost:8080", description = "Local server.")})
 //@formatter:on
 public interface JeepSalesController {
+  
   
   // @formatter:off
   @Operation(
@@ -69,7 +76,11 @@ public interface JeepSalesController {
   @GetMapping
   @ResponseStatus(code = HttpStatus.OK)
    List<Jeep> fetchJeeps(
-      @RequestParam(required = false) String model, 
+       
+      @RequestParam(required = false) JeepModel model, 
+      @Length(max = Constants.TRIM_MAX_LENGTH)
+// limits characters to those found in w (words) and s (spaces), other characters wouldn't be allowed
+      @Pattern(regexp="[\\w\\s]*")
       @RequestParam(required = false) String trim);
   // @formatter:on
 }
